@@ -1,5 +1,7 @@
 # FocusBoard
 
+**Disclaimer:** This project is created by GLM-5.1 using one single prompt just for testing purpose.
+
 A polished full-stack productivity app for managing personal tasks and deep-work sessions. Built with Next.js, TypeScript, Tailwind CSS, Prisma, and PostgreSQL.
 
 ## Features
