@@ -8,7 +8,7 @@ const taskSchema = z.object({
   title: z.string().min(1, 'Title is required'),
   description: z.string().optional(),
   priority: z.enum(['low', 'medium', 'high', 'urgent']).default('medium'),
-  status: z.enum(['todo', 'in_progress', 'done']).default('todo'),
+  status: z.enum(['todo', 'in_progress', 'done', 'closed']).default('todo'),
   dueDate: z.string().optional().nullable(),
   tags: z.string().default(''),
 });
@@ -24,12 +24,22 @@ export async function GET(req: NextRequest) {
     if (!user) return NextResponse.json({ error: 'User not found' }, { status: 404 });
 
     const { searchParams } = new URL(req.url);
-    const status = searchParams.get('status');
+    const statusParam = searchParams.get('status');
     const priority = searchParams.get('priority');
     const tag = searchParams.get('tag');
 
     const where: any = { userId: user.id };
-    if (status) where.status = status;
+
+    // Support comma-separated status values (e.g. status=todo,in_progress)
+    if (statusParam) {
+      const statuses = statusParam.split(',').map(s => s.trim()).filter(Boolean);
+      if (statuses.length === 1) {
+        where.status = statuses[0];
+      } else if (statuses.length > 1) {
+        where.status = { in: statuses };
+      }
+    }
+
     if (priority) where.priority = priority;
     if (tag) where.tags = { contains: tag };
 

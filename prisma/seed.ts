@@ -32,6 +32,7 @@ async function main() {
     { title: 'Prepare sprint demo', description: 'Create presentation slides for the sprint review meeting', priority: 'medium', status: 'todo', tags: 'meeting', dueDate: new Date(Date.now() + 4 * 86400000), order: 8 },
     { title: 'Optimize database queries', description: 'Profile and optimize slow queries in the dashboard endpoint', priority: 'high', status: 'todo', tags: 'performance,backend', dueDate: new Date(Date.now() + 6 * 86400000), order: 9 },
     { title: 'Write unit tests for auth', description: 'Increase test coverage for authentication module to 90%', priority: 'medium', status: 'done', tags: 'testing', dueDate: new Date(Date.now() - 3 * 86400000), order: 10 },
+    { title: 'Migrate database schema', description: 'Applied schema migrations and verified data integrity', priority: 'high', status: 'closed', tags: 'devops,backend', dueDate: new Date(Date.now() - 5 * 86400000), order: 11 },
   ];
 
   for (const task of tasks) {

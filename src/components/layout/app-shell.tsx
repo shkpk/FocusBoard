@@ -6,6 +6,7 @@ import { useRouter } from 'next/navigation';
 import { Sidebar } from './sidebar';
 import { CommandPalette } from '@/components/command-palette';
 import { TooltipProvider } from '@/components/ui/tooltip';
+import { Toaster } from 'sonner';
 
 export function AppShell({ children }: { children: React.ReactNode }) {
   const { data: session, status } = useSession();
@@ -41,6 +42,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
         </main>
       </div>
       <CommandPalette />
+      <Toaster richColors position="bottom-right" />
     </TooltipProvider>
   );
 }

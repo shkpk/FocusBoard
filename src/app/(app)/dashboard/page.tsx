@@ -68,10 +68,10 @@ export default function DashboardPage() {
 
   const upcomingTasks = tasks.filter(t => {
     if (!t.dueDate) return false;
-    return new Date(t.dueDate) > new Date() && t.status !== 'done';
+    return new Date(t.dueDate) > new Date() && t.status !== 'done' && t.status !== 'closed';
   }).slice(0, 5);
 
-  const recentCompleted = tasks.filter(t => t.status === 'done').slice(0, 5);
+  const recentCompleted = tasks.filter(t => t.status === 'done' || t.status === 'closed').slice(0, 5);
 
   const priorityColor = (p: string) => {
     switch (p) {

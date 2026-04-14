@@ -11,17 +11,30 @@ export async function POST(req: NextRequest) {
     const user = await prisma.user.findUnique({ where: { email: session.user.email } });
     if (!user) return NextResponse.json({ error: 'User not found' }, { status: 404 });
 
-    const { tasks } = await req.json();
+    const { tasks } = await req.json() as {
+      tasks: Array<{ id: string; order: number; status?: string }>;
+    };
 
-    for (const task of tasks) {
-      await prisma.task.update({
-        where: { id: task.id, userId: user.id },
-        data: { order: task.order },
-      });
+    if (!Array.isArray(tasks) || tasks.length === 0) {
+      return NextResponse.json({ error: 'Invalid payload' }, { status: 400 });
     }
+
+    // Use a transaction for batch updates
+    await prisma.$transaction(
+      tasks.map(task =>
+        prisma.task.updateMany({
+          where: { id: task.id, userId: user.id },
+          data: {
+            order: task.order,
+            ...(task.status !== undefined && { status: task.status }),
+          },
+        })
+      )
+    );
 
     return NextResponse.json({ success: true });
   } catch (error) {
+    console.error('Reorder error:', error);
     return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
   }
 }

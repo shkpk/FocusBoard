@@ -1,9 +1,12 @@
+export type TaskStatus = 'todo' | 'in_progress' | 'done' | 'closed';
+export type TaskPriority = 'low' | 'medium' | 'high' | 'urgent';
+
 export interface Task {
   id: string;
   title: string;
   description: string | null;
-  priority: 'low' | 'medium' | 'high' | 'urgent';
-  status: 'todo' | 'in_progress' | 'done';
+  priority: TaskPriority;
+  status: TaskStatus;
   dueDate: string | null;
   tags: string[];
   order: number;
@@ -18,7 +21,7 @@ export interface Note {
   createdAt: string;
   updatedAt: string;
   userId: string;
-  taskId: string;
+  taskId: string | null;
 }
 
 export interface FocusSession {

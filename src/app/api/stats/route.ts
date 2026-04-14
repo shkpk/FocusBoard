@@ -19,7 +19,7 @@ export async function GET() {
 
     const [totalTasks, completedTasks, inProgressTasks, todoTasks, focusToday, focusWeek, allSessions] = await Promise.all([
       prisma.task.count({ where: { userId: user.id } }),
-      prisma.task.count({ where: { userId: user.id, status: 'done' } }),
+      prisma.task.count({ where: { userId: user.id, status: { in: ['done', 'closed'] } } }),
       prisma.task.count({ where: { userId: user.id, status: 'in_progress' } }),
       prisma.task.count({ where: { userId: user.id, status: 'todo' } }),
       prisma.focusSession.findMany({
@@ -81,7 +81,7 @@ export async function GET() {
       focusMinutesToday,
       focusMinutesWeek,
       streak,
-      completionRate: totalTasks > 0 ? Math.round((completedTasks / totalTasks) * 100) : 0,
+      completionRate: totalTasks > 0 ? Math.round(((completedTasks) / totalTasks) * 100) : 0,
       weeklyData,
     });
   } catch (error) {
